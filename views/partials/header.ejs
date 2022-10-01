@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <!-- Navbar with bootstrap -->
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+      <div class="container-fluid">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <% if(title == "Home"){  %>
+              <a class="nav-link active" href="/">Home</a>
+            <% } else { %>  
+              <a class="nav-link" href="/">Home</a>
+            <% } %>
+          </li>
+          <li class="nav-item">
+            <% if(title == "Projects"){  %>
+              <a class="nav-link active" href="/projects">Projects</a>
+            <% } else { %>  
+              <a class="nav-link" href="/projects">Projects</a>
+            <% } %>
+          </li>
+          <li class="nav-item">
+            <% if(title == "Services"){  %>
+              <a class="nav-link active" href="/services">Services</a>
+            <% } else { %>  
+              <a class="nav-link" href="/services">Services</a>
+            <% } %>
+          </li>
+          <li class="nav-item">
+            <% if(title == "About Me"){  %>
+              <a class="nav-link active" href="/about">About Me</a>
+            <% } else { %>  
+              <a class="nav-link" href="/about">About Me</a>
+            <% } %>
+          </li>
+          <li class="nav-item">
+            <% if(title == "Contact"){  %>
+              <a class="nav-link active" href="/contact">Contact</a>
+            <% } else { %>  
+              <a class="nav-link" href="/contact">Contact</a>
+            <% } %>
+          </li>
+          <li class="nav-item">
+            <% if(title == "Julio"){  %>
+              <a class="nav-link active" href="/users/julio">User</a>
+            <% } else { %>  
+              <a class="nav-link" href="/users/julio">User</a>
+            <% } %>
+          </li>
+        </ul>
+      </div>
+    </nav>
