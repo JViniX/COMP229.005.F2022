@@ -22,17 +22,19 @@
   "homepage": "https://github.com/JViniX/COMP229.005.F2022#readme",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.2.0",
-    "bootstrap": "^5.2.1",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "bootstrap": "^5.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "jquery": "^3.6.0",
+    "mongoose": "^6.0.8",
     "morgan": "~1.9.1"
   }
 }
