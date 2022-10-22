@@ -73,8 +73,10 @@ module.exports.signup = function(req, res, next) {
         });
       }
       req.login(user, (err) => {
-        if (err) return next(err);
-          return res.redirect('/');
+        if (err) { 
+          return next(err);
+        }
+        return res.redirect('/');
       });
     });
   } else {
