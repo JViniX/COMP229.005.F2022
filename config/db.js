@@ -1,12 +1,11 @@
-// In real project, never expose your credential in your code.
-let atlasDB = "mongodb+srv://dbuser:YmAtl2iVPIzhH4V6@cluster005.vkuwqmu.mongodb.net/products";
+let config = require('./config');
 
 let mongoose = require('mongoose');
 
 module.exports = function(){
 
     // Connect to the database
-    mongoose.connect(atlasDB);
+    mongoose.connect(config.ATLASDB);
 
     let mongodb = mongoose.connection;
     mongodb.on('error', console.error.bind(console, 'Connection Error:'));
