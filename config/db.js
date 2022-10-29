@@ -1,5 +1,5 @@
 // In real project, never expose your credential in your code.
-let atlasDB = "mongodb+srv://dbuser:YmAtl2iVPIzhH4V6@cluster005.vkuwqmu.mongodb.net/products?retryWrites=true&w=majority";
+let atlasDB = "mongodb+srv://dbuser:YmAtl2iVPIzhH4V6@cluster005.vkuwqmu.mongodb.net/products";
 
 let mongoose = require('mongoose');
 

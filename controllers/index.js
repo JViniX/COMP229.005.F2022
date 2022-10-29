@@ -1,9 +1,11 @@
 exports.home = function(req, res, next) {
-  console.log('===> Original URL: ' + req.session.url);
-  res.render('index', { 
-      title: 'Home',
-      userName: req.user ? req.user.username : ''
-  });
+    
+  res.status(200).json(
+    {
+      success: true,
+      message: "This is the home endpoint."
+    }
+  )
 };
 
 exports.about = function(req, res, next) {
