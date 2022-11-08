@@ -5,9 +5,12 @@ let jwt = require('jsonwebtoken');
 let config = require('../config/config');
 
 function getErrorMessage(err) {
-  console.log("===> Erro: " + err);
+  console.log(err);
   let message = '';
 
+  if (err.message) {
+    message = err.message;
+  }
   if (err.code) {
     switch (err.code) {
       case 11000:
@@ -17,9 +20,11 @@ function getErrorMessage(err) {
       default:
         message = 'Something went wrong';
     }
-  } else {
-    for (var errName in err.errors) {
-      if (err.errors[errName].message) message = err.errors[errName].message;
+  } 
+  if (err.errors) {
+    for (let errName in err.errors) {
+        if (err.errors[errName].message) 
+        message = err.errors[errName].message;
     }
   }
 
@@ -28,32 +33,29 @@ function getErrorMessage(err) {
 
 module.exports.signup = function(req, res, next) {
 
-  console.log(req.body);
+    let user = new User(req.body);
+    user.provider = 'local';
+    // console.log(user);
 
-  let user = new User(req.body);
-  user.provider = 'local';
-  console.log(user);
+    user.save((err) => {
+      if (err) {
+        let message = getErrorMessage(err);
 
-  user.save((err) => {
-    if (err) {
-      let message = getErrorMessage(err);
-
-      return res.status(400).json(
+        return res.status(400).json(
+          {
+            success: false, 
+            message: message
+          }
+        );
+      }
+      return res.json(
         {
-          success: false, 
-          message: message
+          success: true, 
+          message: 'User created successfully!'
         }
       );
-    }
-    return res.json(
-      {
-        success: true, 
-        message: 'User created successfully!'
-      }
-    );
-  });
+    });
 };
-
 
 module.exports.signin = function(req, res, next){
   passport.authenticate(
@@ -115,3 +117,24 @@ module.exports.signin = function(req, res, next){
   )(req, res, next);
 }
 
+
+exports.myprofile = async function(req, res, next){
+
+  try {
+    
+    let id = req.payload.id;
+    let me = await User.findById(id).select('firstName lastName email username admin created');
+
+    res.status(200).json(me)
+
+  } catch (error) {
+    console.log(error);
+      return res.status(400).json(
+          { 
+              success: false, 
+              message: getErrorMessage(error)
+          }
+      );
+  }
+
+}

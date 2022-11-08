@@ -1,3 +1,4 @@
+
 let mongoose = require('mongoose');
 
 // Create a model class
@@ -11,6 +12,11 @@ let inventoryModel = mongoose.Schema(
             h: Number,
             w: Number,
             uom: String
+        },
+        // Adds relationship with User
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }
     },
     {
