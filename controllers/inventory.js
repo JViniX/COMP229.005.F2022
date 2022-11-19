@@ -23,7 +23,9 @@ module.exports.inventoryList = async function(req, res, next){
             select: 'firstName lastName email username admin created'
         });
 
-        res.status(200).json(inventoryList);
+        // setTimeout(()=>{
+            res.status(200).json(inventoryList);
+        // }, 5000)
         
     } catch (error) {
         return res.status(400).json(
@@ -54,18 +56,19 @@ module.exports.processEdit = (req, res, next) => {
             },
             tags: (req.body.tags == null || req.body.tags == "") ? "": req.body.tags.split(",").map(word => word.trim()),
             // If it does not have an owner it assumes the ownership otherwise it transfers it.
-            // owner: (req.body.owner == null || req.body.owner == "")? req.payload.id : req.body.owner 
+            owner: (req.body.owner == null || req.body.owner == "")? req.payload.id : req.body.owner 
         });
     
-        InventoryModel.updateOne({_id: id}, updatedItem, (err) => {
-            if(err)
+        InventoryModel.updateOne({_id: id}, updatedItem, (err, result) => {
+            console.log(err, result);
+            if(err || result.modifiedCount == 0)
             {
                 console.log(err);
  
                 return res.status(400).json(
                     { 
                         success: false, 
-                        message: getErrorMessage(err)
+                        message: err ? getErrorMessage(err): 'Item Not Found.'
                     }
                 );
             }
@@ -95,15 +98,16 @@ module.exports.performDelete = (req, res, next) => {
     try {
         let id = req.params.id;
 
-        InventoryModel.deleteOne({_id: id}, (err) => {
-            if(err)
+        InventoryModel.findByIdAndRemove({_id: id}, {rawResult:true}, (err, result) => {
+            console.log(err, result);
+            if(err || result.value == null)
             {
                 console.log(err);
  
                 return res.status(400).json(
                     { 
                         success: false, 
-                        message: getErrorMessage(err)
+                        message: err ? getErrorMessage(err): 'Item Not Found.'
                     }
                 );
             }
@@ -146,7 +150,7 @@ module.exports.processAdd = (req, res, next) => {
             },
             tags: (req.body.tags == null || req.body.tags == "") ? "": req.body.tags.split(",").map(word => word.trim()),
             // If it does not have an owner it assumes the ownership otherwise it assigns it.
-            // owner: (req.body.owner == null || req.body.owner == "")? req.payload.id : req.body.owner
+            owner: (req.body.owner == null || req.body.owner == "")? req.payload.id : req.body.owner
         });
 
         InventoryModel.create(newItem, (err, item) =>{
