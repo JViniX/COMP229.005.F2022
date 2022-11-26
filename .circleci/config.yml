@@ -1,0 +1,51 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  deploy:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: google/cloud-sdk
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      # Get the code from the GitHub Repo
+      - checkout
+
+      - run:
+          name: Create app.yaml
+          command: |          
+            echo -e "runtime: nodejs16\nenv_variables:\n  ATLASDB: $ATLASDB\n  SECRETKEY: $SECRETKEY\n" > app.yaml 
+
+      - run: 
+          name: Setup Google Cloud CLI
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+
+      - run:
+          name: Deploy the app
+          command: |          
+            gcloud app deploy
+      
+      - run:
+          name: Removes app.yaml
+          command: |          
+            rm app.yaml
+
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  deploy-workflow:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
