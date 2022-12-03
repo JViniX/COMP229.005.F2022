@@ -57,7 +57,7 @@ module.exports.processEdit = async (req, res, next) => {
             },
             tags: (req.body.tags == null || req.body.tags == "") ? "": req.body.tags.split(",").map(word => word.trim()),
             // If it does not have an owner it assumes the ownership otherwise it transfers it.
-            // owner: (req.body.owner == null || req.body.owner == "")? req.payload.id : req.body.owner 
+            owner: (req.body.owner == null || req.body.owner == "")? req.payload.uid : req.body.owner 
         };
 
         let db = firebaseAdmin.firestore();
@@ -135,7 +135,7 @@ module.exports.processAdd = async (req, res, next) => {
             },
             tags: (req.body.tags == null || req.body.tags == "") ? "": req.body.tags.split(",").map(word => word.trim()),
             // If it does not have an owner it assumes the ownership otherwise it assigns it.
-            // owner: (req.body.owner == null || req.body.owner == "")? req.payload.id : req.body.owner
+            owner: (req.body.owner == null || req.body.owner == "")? req.payload.uid : req.body.owner
         };
 
         let response = await newDoc.set(newItem);
