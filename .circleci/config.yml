@@ -16,11 +16,6 @@ jobs:
       # Get the code from the GitHub Repo
       - checkout
 
-      - run:
-          name: Create app.yaml
-          command: |          
-            echo -e "runtime: nodejs16\nenv_variables:\n  ATLASDB: $ATLASDB\n  SECRETKEY: $SECRETKEY\n" > app.yaml 
-
       - run: 
           name: Setup Google Cloud CLI
           command: |
@@ -32,12 +27,6 @@ jobs:
           name: Deploy the app
           command: |          
             gcloud app deploy
-      
-      - run:
-          name: Removes app.yaml
-          command: |          
-            rm app.yaml
-
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
